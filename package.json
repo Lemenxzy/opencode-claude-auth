@@ -51,8 +51,9 @@
   },
   "scripts": {
     "build": "tsc && cp src/anthropic-prompt.txt dist/",
-    "test": "node --test --experimental-strip-types src/**/*.test.ts",
+    "test": "node --test --experimental-strip-types src/**/*.test.ts scripts/**/*.test.ts",
     "test:models": "pnpm run build && node scripts/test-models.ts",
+    "doctor": "node --experimental-strip-types scripts/doctor.ts",
     "intercept": "pnpm run build && node --experimental-strip-types scripts/intercept-claude.ts",
     "intercept:all": "pnpm run build && node --experimental-strip-types scripts/intercept-claude.ts --all",
     "intercept:update": "pnpm run build && node --experimental-strip-types scripts/intercept-claude.ts --all --update",
@@ -60,6 +61,7 @@
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write .",
     "format": "oxfmt --write .",
+    "sync": "node --experimental-strip-types scripts/sync.ts",
     "prepublishOnly": "pnpm run build && pnpm test"
   },
   "devDependencies": {

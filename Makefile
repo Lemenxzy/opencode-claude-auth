@@ -1,4 +1,4 @@
-.PHONY: build test test-models lint fix format clean intercept intercept-all intercept-update validate-oauth validate-oauth-dry
+.PHONY: build test test-models lint fix format clean intercept intercept-all intercept-update validate-oauth validate-oauth-dry doctor sync
 
 build:
 	pnpm run build
@@ -29,6 +29,12 @@ intercept-all:
 
 intercept-update:
 	pnpm run intercept:update
+
+doctor:
+	pnpm run doctor
+
+sync:
+	pnpm run sync
 
 validate-oauth: build  ## Run live OAuth refresh (rotates token, writes back)
 	pnpm run validate:oauth
