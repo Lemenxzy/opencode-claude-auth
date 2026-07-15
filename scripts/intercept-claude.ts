@@ -386,9 +386,13 @@ export function updateModelConfig(
           (b) => !(updates.newBaseBetas ?? config.baseBetas).includes(b),
         ),
       ])
+      // Preserve non-beta override fields (e.g. disableEffort) — intercept
+      // only observes beta headers, so it cannot decide these fields itself
+      // and must leave them alone.
+      const disableEffort = existing.disableEffort === true
 
       // Only write the override if there's something to override
-      if (exclude.length === 0 && add.length === 0) continue
+      if (exclude.length === 0 && add.length === 0 && !disableEffort) continue
 
       const parts: string[] = []
       if (exclude.length > 0) {
@@ -398,6 +402,9 @@ export function updateModelConfig(
       }
       if (add.length > 0) {
         parts.push(`      add: [${add.map((a) => `"${a}"`).join(", ")}],`)
+      }
+      if (disableEffort) {
+        parts.push(`      disableEffort: true,`)
       }
 
       const overrideBlock = `    ${overrideKey}: {\n${parts.join("\n")}\n    },`
@@ -409,10 +416,12 @@ export function updateModelConfig(
       if (overrideRegex.test(src)) {
         src = src.replace(overrideRegex, overrideBlock)
       } else {
-        // Insert before the closing } of modelOverrides
+        // Append to the end of modelOverrides so broader patterns (e.g.
+        // "sonnet") do not shadow more specific ones (e.g. "4-6") when
+        // getModelOverride does first-match-wins pattern lookup.
         src = src.replace(
-          /modelOverrides:\s*\{/,
-          `modelOverrides: {\n${overrideBlock}`,
+          /(modelOverrides:\s*\{[\s\S]*?)(\n  \},)/,
+          `$1\n${overrideBlock}$2`,
         )
       }
     }

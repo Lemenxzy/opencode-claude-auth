@@ -12,7 +12,7 @@ export interface ModelConfig {
 }
 
 export const config: ModelConfig = {
-  ccVersion: "2.1.185",
+  ccVersion: "2.1.210",
   baseBetas: [
     "claude-code-20250219",
     "oauth-2025-04-20",
@@ -22,8 +22,6 @@ export const config: ModelConfig = {
     "advisor-tool-2026-03-01",
     "thinking-token-count-2026-05-13",
     "extended-cache-ttl-2025-04-11",
-    "effort-2025-11-24",
-    "interleaved-thinking-2025-05-14",
   ],
   longContextBetas: [
     "context-1m-2025-08-07",
@@ -31,7 +29,7 @@ export const config: ModelConfig = {
   ],
   modelOverrides: {
     haiku: {
-      exclude: ["interleaved-thinking-2025-05-14"],
+      exclude: ["effort-2025-11-24"],
       disableEffort: true,
     },
     "4-6": {
@@ -39,6 +37,9 @@ export const config: ModelConfig = {
     },
     "4-7": {
       add: ["effort-2025-11-24"],
+    },
+    sonnet: {
+      exclude: ["effort-2025-11-24"],
     },
   },
 }
