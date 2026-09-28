@@ -393,8 +393,6 @@ export function updateModelConfig(
       // Preserve non-beta override fields (e.g. disableEffort) — intercept
       // only observes beta headers, so it cannot decide these fields itself
       // and must leave them alone.
-      const disableEffort = existing.disableEffort === true
-
       // Only write the override if there's something to override
       if (exclude.length === 0 && add.length === 0 && !existing.disableEffort) {
         continue
